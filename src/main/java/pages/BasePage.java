@@ -45,6 +45,10 @@ public class BasePage {
         waitFor(DEFAULT_TIMEOUT_SECONDS).until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
+    protected void waitForElementToBeVisible(By locator, int timeoutSeconds) {
+        waitFor(timeoutSeconds).until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
     protected void waitForElementToBeInvisible(By locator) {
         waitFor(DEFAULT_TIMEOUT_SECONDS).until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }

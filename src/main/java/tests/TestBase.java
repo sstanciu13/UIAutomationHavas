@@ -35,21 +35,21 @@ public class TestBase {
         readAppProperties();
     }
 
+    @Parameters({ "browser" })
     @BeforeMethod
-    @Parameters({"browser"})
-    public void beforeMethod() {
-        setupDriver("chrome");
+    public void beforeMethod(@Optional("chrome") String browserName) {
+        setupDriver(browserName);
         setupLogger();
         instantiatePages();
         loginCristianMoga();
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown() {
+    public void afterMethod() {
         driverManager.quitDriver();
     }
 
-    private void setupDriver(@Optional("chrome") String browser) {
+    private void setupDriver(String browser) {
         driverManager = getDriverManager(browser);
         webDriver = driverManager.getDriver();
         webDriver.manage().window().maximize();

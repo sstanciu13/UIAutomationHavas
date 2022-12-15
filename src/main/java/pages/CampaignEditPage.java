@@ -2,10 +2,12 @@ package pages;
 
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 
 public class CampaignEditPage extends BasePage{
-    static final String LIGHT_BLUE = "rgba(0, 174, 208, 1)";
+    static final String LIGHT_BLUE_CHROME = "rgba(0, 174, 208, 1)";
+    static final String LIGHT_BLUE_FIREFOX = "rgb(0, 174, 208)";
 
     public CampaignEditPage(WebDriver driver, Logger logger) {
         super(driver, logger);
@@ -36,7 +38,8 @@ public class CampaignEditPage extends BasePage{
     }
 
     public boolean verifyPlanningTabIsActive() {
-        return getCSSValue(tab(Tab.Planning), "color").equals(LIGHT_BLUE);
+        return (getCSSValue(tab(Tab.Planning), "color").equals(LIGHT_BLUE_CHROME) ||
+                getCSSValue(tab(Tab.Planning), "color").equals(LIGHT_BLUE_FIREFOX));
     }
 
     public void accessCampaignTab() {
@@ -45,7 +48,8 @@ public class CampaignEditPage extends BasePage{
     }
 
     public boolean verifyCampaignTabIsActive() {
-        return getCSSValue(tab(Tab.Campaign), "color").equals(LIGHT_BLUE);
+        return (getCSSValue(tab(Tab.Campaign), "color").equals(LIGHT_BLUE_CHROME) ||
+                getCSSValue(tab(Tab.Campaign), "color").equals(LIGHT_BLUE_FIREFOX));
     }
 
 
@@ -54,7 +58,11 @@ public class CampaignEditPage extends BasePage{
      */
 
     private void waitForSpinner(By spinnerLocator){
-        waitForElementToBeVisible(spinnerLocator);
+        try {
+            waitForElementToBeVisible(spinnerLocator, 2);
+        } catch (TimeoutException timeoutException) {
+            logger.debug("Spinner was not detected.");
+        }
         waitForElementToBeInvisible(spinnerLocator);
     }
 
